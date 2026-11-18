@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153d34">
+  <title>Northstar Bank | Advisor appointments</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Northstar Bank home"><span class="brand-mark" aria-hidden="true">N</span> NORTHSTAR <span class="bank">BANK</span></a>
+    <span class="workspace">BRANCH WORKSPACE <span class="demo">DEMO</span></span>
+  </header>
+  <main>
+    <section class="intro">
+      <div>
+        <p class="eyebrow">PERSONAL CONNECTIONS. CONFIDENT FUTURES.</p>
+        <h1>A little time.<br>A clearer financial future.</h1>
+        <p class="description">Connect customers with the right financial advisor.<br>Choose an available time to book a one-hour meeting.</p>
+      </div>
+      <aside class="hours-card"><span class="status-dot"></span> ADVISOR APPOINTMENTS<strong>10:00 AM &ndash; 10:00 PM</strong><span>4 specialists &middot; One-hour meetings</span></aside>
+    </section>
+    <section class="schedule-panel" aria-label="Advisor schedules">
+      <div class="toolbar">
+        <div><p class="eyebrow">MAKE ROOM FOR WHAT MATTERS</p><h2>Find a meeting time</h2></div>
+        <div class="date-controls">
+          <button id="previous-day" class="icon-button" aria-label="Previous day" type="button">&larr;</button>
+          <label class="date-label"><span class="sr-only">Appointment date</span><input id="schedule-date" type="date" required></label>
+          <button id="next-day" class="icon-button" aria-label="Next day" type="button">&rarr;</button>
+          <button id="today" class="secondary-button" type="button">Today</button>
+        </div>
+      </div>
+      <div class="schedule-meta"><p id="date-heading"></p><div class="legend"><span><i class="available-key"></i> Available</span><span><i class="booked-key"></i> Booked</span></div></div>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <div id="schedule" class="advisor-grid" aria-busy="true"></div>
+      <p class="footnote">All times are local branch time. The last meeting starts at 9:00 PM.</p>
+    </section>
+    <footer><span>NORTHSTAR BANK <span class="footer-divider">/</span> Better conversations start here.</span><span>Demo workspace &middot; Appointments reset when the API restarts</span></footer>
+  </main>
+  <dialog id="booking-dialog" aria-labelledby="booking-title">
+    <form id="booking-form">
+      <div class="dialog-top"><p class="eyebrow">A STEP TOWARD WHAT'S NEXT</p><button id="close-dialog" class="icon-button" type="button" aria-label="Close booking dialog">&times;</button></div>
+      <h2 id="booking-title">Book an appointment</h2>
+      <div id="booking-summary" class="booking-summary"></div>
+      <label class="customer-label" for="customer-name">Customer name</label>
+      <input id="customer-name" name="customerName" type="text" maxlength="100" placeholder="Enter the customer's full name" autocomplete="off" required>
+      <p id="booking-error" role="alert"></p>
+      <div class="dialog-actions"><button id="cancel-booking" class="secondary-button" type="button">Cancel</button><button id="confirm-booking" class="primary-button" type="submit">Confirm appointment</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "advisor-scheduler-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone Node.js frontend for the financial advisor scheduling API",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
