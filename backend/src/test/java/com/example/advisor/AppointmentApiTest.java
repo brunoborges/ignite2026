@@ -6,24 +6,24 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AppointmentApiTest {
@@ -33,7 +33,7 @@ public class AppointmentApiTest {
     @Autowired
     private AppointmentRepository appointments;
 
-    @Before
+    @BeforeEach
     public void clearAppointments() {
         appointments.deleteAll();
     }
@@ -92,6 +92,21 @@ public class AppointmentApiTest {
         for (String request : invalid) {
             mvc.perform(post("/api/appointments").contentType(MediaType.APPLICATION_JSON).content(request))
                 .andExpect(status().isBadRequest());
+        }
+        assertEquals(0, appointments.count());
+    }
+
+    @Test
+    public void rejectsFractionalBookingCoordinatesWithoutSavingAppointments() throws Exception {
+        String[] invalid = {
+            "{\"advisorId\":1.9,\"date\":\"2026-11-18\",\"hour\":10,\"customerName\":\"Morgan\"}",
+            "{\"advisorId\":1,\"date\":\"2026-11-18\",\"hour\":10.9,\"customerName\":\"Morgan\"}"
+        };
+        for (String request : invalid) {
+            mvc.perform(post("/api/appointments").contentType(MediaType.APPLICATION_JSON).content(request))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(
+                    "Provide a valid JSON appointment with integer advisorId and hour."));
         }
         assertEquals(0, appointments.count());
     }
